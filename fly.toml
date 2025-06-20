@@ -1,0 +1,19 @@
+app = "webrtc-signal-server"
+
+[build]
+dockerfile = "Dockerfile"
+
+[env]
+RUST_LOG = "info"
+
+[[services]]
+internal_port = 3000
+protocol = "tcp"
+
+[[services.ports]]
+port = 80
+handlers = ["http"]
+
+[[services.ports]]
+port = 443
+handlers = ["tls", "http"]
