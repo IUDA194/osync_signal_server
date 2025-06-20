@@ -26,4 +26,5 @@ COPY --from=builder /app/target/release/webrtc-signal-server /usr/local/bin/serv
 EXPOSE 3000
 
 # Запуск
-CMD ["server"]
+CMD ["webrtc-signal-server"]
+
