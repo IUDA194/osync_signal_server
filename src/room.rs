@@ -2,7 +2,7 @@ use axum::extract::ws::{Message, WebSocket};
 use dashmap::DashMap;
 use futures::{sink::SinkExt, stream::StreamExt};
 use std::sync::Arc;
-use tracing::{info, debug, warn};
+use tracing::{debug, info, warn};
 
 type Peer = tokio::sync::mpsc::UnboundedSender<Message>;
 
@@ -20,7 +20,10 @@ impl RoomMap {
 
     pub fn broadcast(&self, room: &str, sender_id: usize, msg: Message) {
         if let Some(peers) = self.0.get(room) {
-            debug!("Broadcasting message in room: {} from peer: {}", room, sender_id);
+            debug!(
+                "Broadcasting message in room: {} from peer: {}",
+                room, sender_id
+            );
             for (i, peer) in peers.iter().enumerate() {
                 if i != sender_id {
                     let _ = peer.send(msg.clone());

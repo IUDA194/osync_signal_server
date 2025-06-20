@@ -1,16 +1,15 @@
-use std::sync::Arc;
 use axum::{
     extract::{ws::WebSocketUpgrade, Path, State},
     response::IntoResponse,
     routing::get,
     Router,
 };
+use std::sync::Arc;
 use tokio::net::TcpListener;
 use tracing::{info, Level};
-use tracing_subscriber;
 
 mod room;
-use room::{RoomMap, handle_socket};
+use room::{handle_socket, RoomMap};
 
 #[tokio::main]
 async fn main() {
