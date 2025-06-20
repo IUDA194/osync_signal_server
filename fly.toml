@@ -1,19 +1,25 @@
-# -------- Stage 1: Builder --------
-FROM rust:1.83 as builder
+app = "webrtc-signal-server-shy-water-5563"
+primary_region = "fra"
 
-WORKDIR /app
-COPY . .
+[build]
+  dockerfile = "Dockerfile"
 
-# Компилируем бинарник в release-режиме
-RUN cargo build --release
+[env]
+  RUST_LOG = "info"
 
-# -------- Stage 2: Runtime --------
-FROM debian:bookworm-slim
+[[services]]
+  protocol = "tcp"
+  internal_port = 3000
 
-RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
 
-# Копируем только бинарник
-COPY --from=builder /app/target/release/webrtc-signal-server /usr/local/bin/webrtc-signal-server
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
 
-# Запускаем бинарник
-CMD ["webrtc-signal-server"]
+[[vm]]
+  memory = "1gb"
+  cpu_kind = "shared"
+  cpus = 1
