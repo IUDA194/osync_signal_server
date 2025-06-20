@@ -1,19 +1,30 @@
-app = "webrtc-signal-server"
+# fly.toml app configuration file generated for webrtc-signal-server-shy-water-5563 on 2025-06-20T21:03:18+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "webrtc-signal-server-shy-water-5563"
+primary_region = 'fra'
 
 [build]
-dockerfile = "Dockerfile"
+  dockerfile = 'Dockerfile'
 
 [env]
-RUST_LOG = "info"
+  RUST_LOG = 'info'
 
 [[services]]
-internal_port = 3000
-protocol = "tcp"
+  protocol = 'tcp'
+  internal_port = 3000
 
-[[services.ports]]
-port = 80
-handlers = ["http"]
+  [[services.ports]]
+    port = 80
+    handlers = ['http']
 
-[[services.ports]]
-port = 443
-handlers = ["tls", "http"]
+  [[services.ports]]
+    port = 443
+    handlers = ['tls', 'http']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
